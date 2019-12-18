@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Enrollment - Homepage</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <!--<link href="css/sb-admin-2.css" rel="stylesheet">-->
+  <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body id="page-top">  <!--用于回到顶部-->
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar 侧栏-->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index/">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Enrollment</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="/index/">
+          <i class="fas fa-fw fa-tachometer-alt"></i> <!--Dashboard前面那个图标-->
+          <span style="color:#ffffff">Home Page</span>
+        </a>
+      </li>
+      
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Enrollment
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Courses</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Courses:</h6>
+
+            <form action="/view-course/" action='/select-course/'>
+                 {% csrf_token %}
+                <a class="collapse-item" href="/view-course/" >Courses</a>
+                <a class="collapse-item" href="/select-course/">Select Courses</a>
+            </form>
+            
+            
+            <!-- <a class="collapse-item" href="view_course.html">View Courses</a>
+            <a class="collapse-item" href="cards.html">Elective Courses</a> -->
+          </div>
+        </div>
+      </li>
+
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Grades
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Grades</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Grades:</h6>
+            <a class="collapse-item" href="/view-grade/">View Grades</a>
+            <a class="collapse-item" href="/calculate-grade/">Calculate Grades</a>
+            <!--<a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+             <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Other Pages:</h6>
+            <a class="collapse-item" href="404.html">404 Page</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a> -->
+          </div>
+        </div>
+      </li>
+
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Reservation
+      </div>
+
+      <!-- Nav Item - Charts -->
+      <li class="nav-item">
+        <a class="nav-link" href="/discussion-room/">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Discussion Room</span></a>
+      </li>
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="/classroom/">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Classroom</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper 右边主页内容 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar 主页右边顶栏-->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          {% if pwd_message%}
+          <div id= "change_pwd_notice" >
+           <!-- <h4 >You have changed the password just now!</h4> -->
+           <h4>{{ pwd_message }}</h4>
+          </div>
+          {% endif %}
+          <!-- Topbar Search -->
+          <!-- <form action="/search-result/" method="post" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" name="course_name" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+
+              <div class="input-group-append">               
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+
+            </div>
+          </form>   -->    
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - notice -->
+           
+                                   
+            <!-- Nav Item - Alerts (警告（重要）消息)-->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">2+</span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                  Alerts Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">September 12, 2019</div>
+                    <span class="font-weight-bold">Attention! No.8 signal has been hoisted!</span>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-success">
+                      <i class="fas fa-donate text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">Octorber 7, 2019</div>
+                    Course selection will begin on November 5!
+                  </div>
+                </a>
+                <!-- <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 2, 2019</div>
+                    Spending Alert: We've noticed unusually high spending for your account.
+                  </div>
+                </a> -->
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+              </div>
+            </li>
+
+            <!-- Nav Item - Messages  (消息)-->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-envelope fa-fw"></i>
+                <!-- Counter - Messages -->
+                <span class="badge badge-danger badge-counter">3</span>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                <h6 class="dropdown-header">
+                  Message Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">We are organizing an astronomy competition in Zhuhai.</div>
+                    <div class="small text-gray-500">Alex· 58m</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
+                    <div class="status-indicator"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">You have submitted the assignment successfully! </div>
+                    <div class="small text-gray-500">Mr.Li· 1d</div>
+                  </div>
+                </a>
+                 <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
+                    <div class="status-indicator bg-warning"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
+                    <div class="small text-gray-500">Morgan · 2d</div>
+                  </div>
+                </a>
+                <!--<a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
+                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                  </div>
+                </a> -->
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+              </div>
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information(用户下方的个人信息界面入口) -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if request.session.student_name %}
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{request.session.student_name}}</span>
+                {% endif%}
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <!-- <img class="img-profile rounded-circle" src="static/img/cute.jpg"> -->
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#passwordModal">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Password change
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Settings
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Activity Log
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Home Page</h1>
+            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+          </div>
+
+          <!-- Content Row (四个卡片信息)-->
+          <div class="row">
+
+            <!-- 重要通知 Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Important Notice</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">NO.8 signal!</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 老师预约通知 Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Appointment</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Comfirm!</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 还书进度 Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Return Book Notice</div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">80%</div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 天气 Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Weather</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Sunny</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Row -->
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Calender</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+                <!--Card Body-->
+                <div class="calendar-card">
+                  <div class="chart-area">
+                    <!--日历开始-->
+                    <div id="cldFrame">
+                      <div id="cldBody">
+                          <table>
+                              <thead>
+                                  <tr>
+                                      <td colspan="7">
+                                          <div id="top">
+                                              <span id="left">&lt;</span>
+                                              <span id="topDate"></span>
+                                              <span id="right">&gt;</span>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  <tr id="week">
+                                      <td>Sun</td>
+                                      <td>Mon</td>
+                                      <td>Tue</td>
+                                      <td>Wed</td>
+                                      <td>Thu</td>
+                                      <td>Fri</td>
+                                      <td>Sat</td>
+                                  </tr>
+                              </thead>
+                              <tbody id="tbody">
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  <!--日历结束-->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div class="col-xl-4 col-lg-5">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Important Notice Of University</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <!-- <div class="chart-pie pt-4 pb-2">
+                    <canvas id="myPieChart"></canvas>
+                  </div> -->
+                  <!-- <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-primary"></i> Direct
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-success"></i> Social
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-info"></i> Referral
+                    </span>
+                  </div> -->
+                  <table style=" width:280px; height:400px;">
+                    <tr>
+                      <th>
+                        最新消息：秋季就业招聘会成功举办！
+                      </th>
+                    </tr>
+                    <tr>
+                       <th>
+                       春节放假通知
+                       </th>
+                    </tr>
+                    <tr>
+                      <th>
+                      开始订书通告  
+                      </th>                      
+                    </tr>
+                    <tr>
+                      <th>
+                      威尼斯人演唱会门票免费派发 
+                      </th>                      
+                    </tr>
+                    <tr>
+                      <th>
+                      通行证续签提醒  
+                      </th>                      
+                    </tr>
+                    <tr>
+                      <th>
+                      学校活动预告  
+                      </th>                      
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; MUST-DL Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button(回到顶部)--> 
+  <a class="scroll-to-top rounded" href="#page-top">  
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="/login/">Logout</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!--change password Modal-->
+  <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to change your password?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div class="modal-body">Select "Confirm" below if you are ready to change your password.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="/reset-password/">Confirm</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+
+</body>
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<!-- Page level custom scripts --><!--原日历处折线图-->
+<!--<script src="js/demo/chart-area-demo.js"></script>
+<script src="js/demo/chart-pie-demo.js"></script>-->
+
+<script>
+  $(function(){
+    setTimeout(function(){
+      $("#change_pwd_notice").hide();
+    },5000);
+
+  })
+</script>
+
+
+<script>
+  $(function() {
+/*判断某年是否是闰年*/
+    function isLeap(year) {
+        if((year%4==0 && year%100!=0) || year%400==0){
+            return true;
+        }
+        else{
+            return false; 
+        }
+    }
+
+/*判断某年某月某日是星期几，默认日为1号*/
+function whatDay(year, month, day=1) {
+  var monthDay = [31,0,31,30,31,30,31,31,30,31,30,31];
+    var sum = 0;
+    sum += (year-1)*365+Math.floor((year-1)/4)-Math.floor((year-1)/100)+Math.floor((year-1)/400)+day;
+    for(var i=0; i<month-1; i++){
+        sum += monthDay[i];
+    }
+    if(month > 2){
+        if(isLeap(year)){ 
+            sum += 29; 
+        }
+        else{
+             sum += 28; 
+        }
+    }
+    return sum%7;      //余数为0代表那天是周日，为1代表是周一，以此类推
+}
+
+/*显示日历*/
+function showCld(year, month, firstDay){
+  var monthDay = [31,0,31,30,31,30,31,31,30,31,30,31];
+    var i;
+    var tagClass = "";
+    var nowDate = new Date();
+    
+    var days;//从数组里取出该月的天数
+    if(month == 2){
+        if(isLeap(year)){
+            days = 29;
+        }
+        else{
+            days = 28;
+        }
+    }
+    else{
+        days = monthDay[month-1];
+    }
+
+    /*当前显示月份添加至顶部*/
+    var topdateHtml = year + " - " + month ;
+    var topDate = document.getElementById('topDate');
+    topDate.innerHTML = topdateHtml;    
+    
+    /*添加日期部分*/
+    var tbodyHtml = '<tr>';
+    for(i=0; i<firstDay; i++){//对1号前空白格的填充
+        tbodyHtml += "<td></td>";
+    }
+    var changLine = firstDay;
+    for(i=1; i<=days; i++){//每一个日期的填充
+        if(year == nowDate.getFullYear() && month == nowDate.getMonth()+1 && i == nowDate.getDate()) {
+            tagClass = "curDate";//当前日期对应格子
+        } 
+        else{ 
+            tagClass = "isDate";//普通日期对应格子，设置class便于与空白格子区分开来
+        }  
+        tbodyHtml += "<td class=" + tagClass + ">" + i + "</td>";
+        changLine = (changLine+1)%7;
+        if(changLine == 0 && i != days){//是否换行填充的判断
+            tbodyHtml += "</tr><tr>";
+        } 
+    }
+    if(changLine!=0){//添加结束，对该行剩余位置的空白填充
+        for (i=changLine; i<7; i++) {
+            tbodyHtml += "<td></td>";
+        }
+    }//实际上不需要填充后方，但强迫症必须整整齐齐！   
+    tbodyHtml +="</tr>";
+    var tbody = document.getElementById('tbody');
+    tbody.innerHTML = tbodyHtml;
+}
+
+var curDate = new Date();
+var curYear = curDate.getFullYear();
+var curMonth = curDate.getMonth() + 1;
+showCld(curYear,curMonth,whatDay(curYear,curMonth));
+
+function nextMonth(){
+    var topStr = document.getElementById("topDate").innerHTML;
+    var pattern = /\d+/g;
+    var listTemp = topStr.match(pattern);
+    var year = Number(listTemp[0]);
+    var month = Number(listTemp[1]);
+    var nextMonth = month+1;
+    if(nextMonth > 12){
+        nextMonth = 1;
+        year++;
+    }
+    document.getElementById('topDate').innerHTML = '';
+    showCld(year, nextMonth, whatDay(year, nextMonth));
+}
+function preMonth(){
+    var topStr = document.getElementById("topDate").innerHTML;
+    var pattern = /\d+/g;
+    var listTemp = topStr.match(pattern);
+    var year = Number(listTemp[0]);
+    var month = Number(listTemp[1]);
+    var preMonth = month-1;
+    if(preMonth < 1){
+        preMonth = 12;
+        year--;
+    }
+    document.getElementById('topDate').innerHTML = '';
+    showCld(year, preMonth, whatDay(year, preMonth));
+}
+
+document.getElementById('right').onclick = function(){
+        nextMonth();
+    }
+    document.getElementById('left').onclick = function(){
+        preMonth();
+    }
+
+  })
+</script>
+
+</html>
